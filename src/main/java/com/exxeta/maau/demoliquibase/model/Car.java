@@ -28,6 +28,11 @@ public class Car {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DailyProduction dailyProduction;
 
+    @ManyToOne
+    @JoinColumn(name = "dealer_id")
+    private Dealer dealer;
+
+
     public Long getId() {
         return id;
     }
@@ -66,5 +71,13 @@ public class Car {
 
     public void setDailyProduction(DailyProduction dailyProduction) {
         this.dailyProduction = dailyProduction;
+    }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(Dealer dealer) {
+        this.dealer = dealer;
     }
 }

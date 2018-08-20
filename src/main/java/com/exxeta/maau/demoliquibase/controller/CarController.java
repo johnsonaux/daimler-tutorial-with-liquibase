@@ -4,6 +4,7 @@ import com.exxeta.maau.demoliquibase.exception.RequestErrorException;
 import com.exxeta.maau.demoliquibase.model.Car;
 import com.exxeta.maau.demoliquibase.repository.CarRepository;
 import com.exxeta.maau.demoliquibase.repository.DailyProductionRepository;
+import com.exxeta.maau.demoliquibase.repository.DealerRepository;
 import com.exxeta.maau.demoliquibase.repository.FactoryRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,15 @@ public class CarController {
     private FactoryRepository factoryRepository;
     private DailyProductionRepository dailyProductionRepo;
     private CarRepository carRepository;
+    private DealerRepository dealerRepository;
 
 
-    public CarController (FactoryRepository factoryRepository, CarRepository carRepository, DailyProductionRepository dailyProductionRepo){
+    public CarController (FactoryRepository factoryRepository, CarRepository carRepository,
+                          DailyProductionRepository dailyProductionRepo, DealerRepository dealerRepository){
         this.factoryRepository = factoryRepository;
         this.carRepository = carRepository;
         this.dailyProductionRepo = dailyProductionRepo;
+        this.dealerRepository = dealerRepository;
     }
 
     //CREATE new car and set dailyProd
@@ -80,15 +84,10 @@ public class CarController {
     @RequestMapping(value = "/{carId}/setDailyProd/{dailyProdId}", method = RequestMethod.PUT)
     public void updateCar(@PathVariable (value = "carId") Long carId,
                           @PathVariable (value = "dailyProdId") Long dailyProdId){
-        List<Car> allCars =  carRepository.findAll();
-        Car selectedCar = new Car();
-        for (Car car: allCars){
-            if (car.getId().equals(carId)){
-                selectedCar = car;
-            }
-        }
-        final Car carToStore = selectedCar;
-        if (!selectedCar.equals(null)){
+
+
+        final Car carToStore = selectCarById(carId);
+        if (!carToStore.equals(null)){
             dailyProductionRepo.findById(dailyProdId)
                     .map(dailyProduction -> {
                         if (dailyProduction.getFactory() == null){
@@ -104,5 +103,34 @@ public class CarController {
                     });
         }
 
+    }
+
+
+
+    @RequestMapping(value = "/{carId}/toDealer/{dealerId}", method = RequestMethod.PUT)
+    public void sellCarToDealer(@PathVariable (value = "carId") Long carId,
+                                @PathVariable (value = "dealerId") Long dealerId){
+
+        final Car updatedCar = selectCarById(carId);
+        if (!updatedCar.equals(null)){
+            dealerRepository.findById(dealerId)
+                    .map(dealer -> {
+                        updatedCar.setDealer(dealer);
+                        return carRepository.save(updatedCar);
+                    });
+        }
+
+    }
+
+
+    protected Car selectCarById(Long carId) {
+        List<Car> allCars =  carRepository.findAll();
+        Car selectedCar = new Car();
+        for (Car car: allCars){
+            if (car.getId().equals(carId)){
+                selectedCar = car;
+            }
+        }
+        return selectedCar;
     }
 }
