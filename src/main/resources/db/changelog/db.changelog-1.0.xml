@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="maauEXXETA" id="changelog-1.0">
+        <createTable tableName="factory">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="accepted_type" type="int">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+            <column name="location" type="varchar(50)">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="daily_production">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="local_date" type="timestamp">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+            <column name="factory_id" type="bigint">
+                <constraints nullable="true" primaryKey="false" references="factory" foreignKeyName="id"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="car">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+            <column name="vehicle_class" type="varchar(50)">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+            <column name="vehicle_model" type="varchar(50)">
+                <constraints nullable="false" primaryKey="false"/>
+            </column>
+            <column name="daily_prod_id" type="bigint">
+                <constraints nullable="true" primaryKey="false" references="daily_production" foreignKeyName="id"
+                             deleteCascade="true" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
