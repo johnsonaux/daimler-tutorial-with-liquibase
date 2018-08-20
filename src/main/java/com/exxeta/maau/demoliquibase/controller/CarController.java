@@ -8,6 +8,7 @@ import com.exxeta.maau.demoliquibase.repository.DealerRepository;
 import com.exxeta.maau.demoliquibase.repository.FactoryRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController

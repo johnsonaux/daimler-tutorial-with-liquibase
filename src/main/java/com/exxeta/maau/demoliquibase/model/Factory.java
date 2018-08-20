@@ -1,11 +1,12 @@
 package com.exxeta.maau.demoliquibase.model;
 
 import com.exxeta.maau.demoliquibase.model.enumeration.CarTypes;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Factory {
@@ -19,6 +20,11 @@ public class Factory {
 
     @NotNull
     private String location;
+
+
+    //[OneToMany] additional "join" table (id/id) will be created when Car class does not know Factory Class
+    @OneToMany (cascade = CascadeType.ALL)
+    private List<Car> carsInFactory;
 
     public Long getId() {
         return id;
@@ -42,5 +48,13 @@ public class Factory {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Car> getCarsInFactory() {
+        return carsInFactory;
+    }
+
+    public void setCarsInFactory(List<Car> carsInFactory) {
+        this.carsInFactory = carsInFactory;
     }
 }

@@ -1,5 +1,6 @@
 package com.exxeta.maau.demoliquibase.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,6 +21,7 @@ public class DailyProduction {
     @ManyToOne
     @JoinColumn(name = "factory_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Factory factory;
 
     public Long getId() {

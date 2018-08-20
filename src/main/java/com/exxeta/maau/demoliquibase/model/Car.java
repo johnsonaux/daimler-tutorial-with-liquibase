@@ -23,6 +23,7 @@ public class Car {
     @NotNull
     private String vehicleModel;
 
+    //@JoinColumn makes this Entity the owner of the relationship, corresponding column gets added to Car table
     @ManyToOne
     @JoinColumn(name = "dailyProd_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

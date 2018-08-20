@@ -67,4 +67,32 @@ public class FactoryController {
         return cars;
     }
 
+
+    // VERSION 3 - FACTORY KNOWS CAR AND RELATIONSHIP IS UNIDIRECTIONAL
+
+
+    @RequestMapping(value = "/{factoryId}/addCar/{carId}", method = RequestMethod.PUT)
+    public void addCarToFactory(@PathVariable (value = "factoryId") Long factoryId,
+                                @PathVariable (value = "carId") Long carId){
+
+
+        final Car car = selectCarById(carId);
+        factoryRepository.findById(factoryId)
+                .map(factory -> {
+                    factory.getCarsInFactory().add(car);
+                    return factoryRepository.save(factory);
+                });
+    }
+
+    public Car selectCarById(Long carId) {
+        List<Car> allCars =  carRepository.findAll();
+        Car selectedCar = new Car();
+        for (Car car: allCars){
+            if (car.getId().equals(carId)){
+                selectedCar = car;
+            }
+        }
+        return selectedCar;
+    }
+
 }

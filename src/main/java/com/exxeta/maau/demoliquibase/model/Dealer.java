@@ -3,10 +3,8 @@ package com.exxeta.maau.demoliquibase.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +19,13 @@ public class Dealer {
     @OneToMany(mappedBy = "dealer")
     @JsonIgnore
     private Set<Car> carSet;
+
+    //[OneToMany] NO additional "join" table (id/id) will be created - table customer gets column dealer_id
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dealer_id")
+    @JsonIgnore
+    private List<Customer> customerList;
+
 
     public Long getId() {
         return id;
@@ -47,5 +52,11 @@ public class Dealer {
         this.carSet = carSet;
     }
 
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
 
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
+    }
 }
