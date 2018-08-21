@@ -53,7 +53,8 @@ public class CarController {
 
     //UPDATE car vehicleModel
     @RequestMapping(value = "/updateModel/{carId}", method = RequestMethod.PUT)
-    public void updateCarModel(@PathVariable (value= "carId") Long carId, @RequestBody Car addCarRequest){
+    public void updateCarModel(@PathVariable (value= "carId") Long carId,
+                               @RequestBody Car addCarRequest){
         carRepository.findById(carId).map(car -> {
             car.setVehicleModel(addCarRequest.getVehicleModel());
             return carRepository.save(car);
