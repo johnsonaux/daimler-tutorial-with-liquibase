@@ -23,10 +23,10 @@ public class DealerController {
 
     //CREATE
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public void createDealer(@RequestBody Dealer addDealerRequest){
+    public Dealer createDealer(@RequestBody Dealer addDealerRequest){
         Dealer dealer = new Dealer();
         dealer.setName(addDealerRequest.getName());
-        dealerRepository.save(dealer);
+        return dealerRepository.save(dealer);
     }
 
     //RETRIEVE

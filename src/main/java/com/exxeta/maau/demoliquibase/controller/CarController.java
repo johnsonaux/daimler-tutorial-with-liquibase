@@ -73,12 +73,12 @@ public class CarController {
       ----------------------- */
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public void addCar(@RequestBody Car addCarRequest) {
+    public Car addCar(@RequestBody Car addCarRequest) {
         Car car = new Car();
         car.setType(addCarRequest.getType());
         car.setVehicleClass(addCarRequest.getVehicleClass());
         car.setVehicleModel(addCarRequest.getVehicleModel());
-        carRepository.save(car);
+        return carRepository.save(car);
     }
 
     //UPDATE

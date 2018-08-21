@@ -53,10 +53,10 @@ public class DailyProductionController {
       ----------------------- */
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public void addDailyProd(@RequestBody DailyProduction addDailyProductionRequest) {
+    public DailyProduction addDailyProd(@RequestBody DailyProduction addDailyProductionRequest) {
         DailyProduction dailyProd = new DailyProduction();
         dailyProd.setLocalDate(addDailyProductionRequest.getLocalDate());
-        dailyProductionRepo.save(dailyProd);
+        return dailyProductionRepo.save(dailyProd);
     }
 
     //UPDATE
