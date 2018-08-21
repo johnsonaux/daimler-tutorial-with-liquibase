@@ -30,6 +30,7 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "dealer_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Dealer dealer;
 
 

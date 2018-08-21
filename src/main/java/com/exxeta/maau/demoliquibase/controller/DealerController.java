@@ -47,4 +47,10 @@ public class DealerController {
 
 
     //DELETE
+
+    @RequestMapping(value = "/delete/{dealerId}", method = RequestMethod.DELETE)
+    public void deleteDealer(@PathVariable (value = "dealerId") Long dealerId){
+        dealerRepository.deleteById(dealerId);
+
+    }
 }

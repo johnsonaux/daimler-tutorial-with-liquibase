@@ -1,11 +1,13 @@
 package com.exxeta.maau.demoliquibase.controller;
 
+import com.exxeta.maau.demoliquibase.exception.RequestErrorException;
 import com.exxeta.maau.demoliquibase.model.Car;
 import com.exxeta.maau.demoliquibase.model.DailyProduction;
 import com.exxeta.maau.demoliquibase.model.Factory;
 import com.exxeta.maau.demoliquibase.repository.CarRepository;
 import com.exxeta.maau.demoliquibase.repository.DailyProductionRepository;
 import com.exxeta.maau.demoliquibase.repository.FactoryRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,18 +37,23 @@ public class FactoryController {
 
 
     @RequestMapping(value = "/create",  method = RequestMethod.POST)
-    public void addFactory(@RequestBody Factory addFactoryRequest){
+    public Factory addFactory(@RequestBody Factory addFactoryRequest){
         Factory factory = new Factory();
         factory.setAcceptedType(addFactoryRequest.getAcceptedType());
         factory.setLocation(addFactoryRequest.getLocation());
 
-        factoryRepository.save(factory);
+        return factoryRepository.save(factory);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public void deleteFactory(@PathVariable("id") Long factoryId){
+    public ResponseEntity<?> deleteFactory(@PathVariable("id") Long factoryId){
 
-        factoryRepository.deleteById(factoryId);
+        return factoryRepository.findById(factoryId)
+                .map(factory -> {
+                    factoryRepository.delete(factory);
+                    return ResponseEntity.ok().build();
+                }).orElseThrow(() -> new RequestErrorException("No factory with " +factoryId + " found to delete!"));
+        //factoryRepository.deleteById(factoryId);
     }
 
 
